@@ -12,4 +12,6 @@ public interface UserMapper {
 
     public User selectUserByAll(User user);
 
+    public Integer addUserList(List list);
+
 }

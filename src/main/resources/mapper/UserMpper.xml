@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-
 <mapper namespace="com.zzy.mapper.UserMapper">
 
     <!--懒加载-->
@@ -13,7 +12,7 @@
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <association property="role" javaType="com.zzy.model.Role"
-            select="com.zzy.mapper.RoleMapper.selectRoleById" column="r_id">
+                     select="com.zzy.mapper.RoleMapper.selectRoleById" column="r_id">
 
         </association>
     </resultMap>
@@ -46,15 +45,22 @@
             <if test="id!=null and id!=''">
                 and id = #{id}
             </if>
-            <if test="username1=null and username!='' ">
-                and username=#{username}
+            <if test="username!=null and username!='' ">
+                and username = #{username}
             </if>
             <if test="username!=null and password!=null">
-                and username =#{username} ,password=#{password}
+                and username = #{username} ,password = #{password}
             </if>
         </where>
     </select>
 
+    <!--批量添加-->
+    <insert id="addUserList" parameterType="java.util.List">
+        insert into user(username,password,r_id) values
+        <foreach collection="list" item="user" separator=",">
+            (#{user.username},#{user.password},#{user.role.id})
+        </foreach>
+    </insert>
 
 
 </mapper>
